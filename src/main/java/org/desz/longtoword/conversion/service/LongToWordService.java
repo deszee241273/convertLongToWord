@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 
 import org.desz.longtoword.conversion.decorators.DeDecorator;
 import org.desz.longtoword.conversion.results.Word;
+import org.desz.longtoword.conversion.results.Word.WordBuilder;
 import org.desz.longtoword.exceptions.BuildWordException;
 import org.desz.longtoword.exceptions.ConversionException;
 import org.desz.longtoword.language.ProvLang;
@@ -36,6 +37,8 @@ public final class LongToWordService {
 
 	public static final ScopedValue<WordCache> WC_CTX = ScopedValue.newInstance();
 	static final ScopedValue<List<String>> NUMS_CTX = ScopedValue.newInstance();
+	static final ScopedValue<WordBuilder> WB_CTX = ScopedValue.newInstance();
+
 
 	/**
 	 *
@@ -64,9 +67,11 @@ public final class LongToWordService {
 		var wordRef = new AtomicReference<Word>();
 		// list of formatted num elements.
 		var numbers = asList(FORMATTER.format(num).split(","));
+		
+		WordBuilder wordBuilder = Word.builder();
 
 		try {
-			var word = ScopedValue.where(WC_CTX, wordCache).where(NUMS_CTX, numbers).call(wordSupplier::get);
+			var word = ScopedValue.where(WB_CTX, wordBuilder).where(WC_CTX, wordCache).where(NUMS_CTX, numbers).call(wordSupplier::get);
 			wordRef.set(word);
 
 			// decorate DE word.

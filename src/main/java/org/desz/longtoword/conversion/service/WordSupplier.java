@@ -18,7 +18,7 @@ import org.desz.longtoword.language.WordCache;
 
 final class WordSupplier implements Supplier<Word> {
 
-	private final WordBuilder wordBuilder = Word.builder();
+	private WordBuilder wordBuilder = Word.builder();
 	private WordCache wordCache;
 	private List<String> numbers;
 
@@ -64,11 +64,11 @@ final class WordSupplier implements Supplier<Word> {
 			assert (LongToWordService.WC_CTX.isBound());
 			this.wordCache = LongToWordService.WC_CTX.orElseThrow(BuildWordException::new);
 
-		}
-
-		if (isNull(this.numbers)) {
 			assert (LongToWordService.NUMS_CTX.isBound());
 			this.numbers = LongToWordService.NUMS_CTX.orElseThrow(BuildWordException::new);
+
+			assert (LongToWordService.WB_CTX.isBound());
+			this.wordBuilder = LongToWordService.WB_CTX.orElseThrow(BuildWordException::new);
 
 		}
 

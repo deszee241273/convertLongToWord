@@ -2,11 +2,13 @@ package org.desz.longtoword.factory;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toUnmodifiableMap;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.of;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import org.desz.longtoword.language.ProvLang;
 import org.desz.longtoword.language.WordCache;
@@ -24,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
- * Implements Supplier functionality, uses Atomicity to ensure Singleton
- * WordCache. creates WordCache, .
+ * Implements Supplier functionality, Singleton, creates single WordCache per
+ * ProvLang.
  *
  * @author des
  *
@@ -33,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class WordCacheSupplier implements SingleParamSupplier<WordCache, ProvLang> {
 
-	// caches WordCache instances per ProvLang
+	// WordCache instances per ProvLang
 	private final Map<ProvLang, WordCache> wordCacheMap;
 
 	private static final AtomicReference<WordCacheSupplier> wcRef = new AtomicReference<>();
@@ -47,7 +49,7 @@ public final class WordCacheSupplier implements SingleParamSupplier<WordCache, P
 
 	/**
 	 *
-	 * @return singleton instance.
+	 * @return singleton WordCacheSupplier.
 	 */
 	public static final WordCacheSupplier wcInstance() {
 		while (true) {
@@ -119,7 +121,8 @@ public final class WordCacheSupplier implements SingleParamSupplier<WordCache, P
 	public WordCache get(ProvLang pl) {
 		requireNonNull(pl, "ProvLang argument null.");
 		var res = wordCacheMap.computeIfAbsent(pl, _ -> cache(pl));
-		log.info(String.format("Cached %s. Cache size %d", pl.name(), this.wordCacheMap.size()));
+		var pls = wordCacheMap.keySet().stream().map(ProvLang::name).collect(joining(", "));
+		log.info(String.format("Cached %s.", pls));
 		return res;
 	}
 }

@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
-
+.classpath
+.project
 .metadata
 bin/
 tmp/
@@ -36,7 +37,7 @@ local.properties
 
 # sbteclipse plugin
 .target
-
+target
 # Tern plugin
 .tern-project
 

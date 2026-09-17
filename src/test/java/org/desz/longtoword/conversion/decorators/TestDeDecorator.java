@@ -5,29 +5,21 @@ import static org.desz.longtoword.language.WordCacheData.DeUnit.QUINTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.desz.longtoword.conversion.results.Word;
-import org.desz.longtoword.conversion.service.LongToWordService;
 import org.desz.longtoword.factory.WordCacheSupplier;
 import org.desz.longtoword.language.ProvLang;
 import org.desz.longtoword.language.WordCache;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TestDeDecorator {
 
 	static WordCache wordCache = WordCacheSupplier.wcInstance().get(ProvLang.DE);
-	LongToWordService srv;
 
-	final ScopedValue<WordCache> TEST_WC_CTX = ScopedValue.newInstance();
-
-	@BeforeEach
-	public void ini() {
-		srv = new LongToWordService();
-	}
+	final ScopedValue<WordCache> wordCacheCtx = ScopedValue.newInstance();
 
 	@Test
 	void runTests() {
 
-		ScopedValue.where(TEST_WC_CTX, wordCache).run(() -> {
+		ScopedValue.where(wordCacheCtx, wordCache).run(() -> {
 			test_pluralise_unit_rule();
 			test_pluralise_hundreth();
 			test_combine_thou_and_hund();
@@ -38,7 +30,7 @@ class TestDeDecorator {
 
 	void test_pluralise_unit_rule() {
 
-		var exp = ONE.numWord.word() + QUINTS.unitRec.word();// .toLowerCase();
+		var exp = ONE.numWord.word() + QUINTS.unitRec.word();
 		var actual = new DeDecorator(Word.builder().quint(exp).build()).pluraliseUnit().quint();
 
 		assertEquals(exp, actual, "Expected ein trillion");

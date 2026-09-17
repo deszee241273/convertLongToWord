@@ -8,22 +8,19 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
+import static org.desz.longtoword.language.ProvLang.DE;
 
 import org.desz.longtoword.conversion.results.Word;
 import org.desz.longtoword.conversion.results.Word.WordBuilder;
 import org.desz.longtoword.conversion.service.LongToWordService;
 import org.desz.longtoword.exceptions.DecoratorException;
 import org.desz.longtoword.factory.WordCacheSupplier;
-import org.desz.longtoword.language.ProvLang;
 import org.desz.longtoword.language.WordCache;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author des
  *
  */
-@Slf4j
 public final class DeDecorator implements IWordDecorator<Word> {
 
 	public WordCache wordCache;
@@ -36,9 +33,7 @@ public final class DeDecorator implements IWordDecorator<Word> {
 	 */
 	public DeDecorator(final Word word) {
 		this.word = requireNonNull(word);
-		if (LongToWordService.WC_CTX.isBound())
-			log.info("WC_CTX BOUND");
-		this.wordCache = LongToWordService.WC_CTX.orElse(WordCacheSupplier.wcInstance().get(ProvLang.DE));
+		this.wordCache = LongToWordService.WC_CTX.orElse(WordCacheSupplier.wcInstance().get(DE));
 
 	}
 
