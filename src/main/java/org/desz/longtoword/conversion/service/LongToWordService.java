@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public final class LongToWordService {
 	private static final NumberFormat FORMATTER = NumberFormat.getIntegerInstance(Locale.UK);
 
-	private final Supplier<Word> wordSupplier = () -> new WordSupplier().get();
+	private final Supplier<Word> wordSupplier = new WordSupplier();
 
 	public static final ScopedValue<WordCache> WC_CTX = ScopedValue.newInstance();
 	static final ScopedValue<List<String>> NUMS_CTX = ScopedValue.newInstance();

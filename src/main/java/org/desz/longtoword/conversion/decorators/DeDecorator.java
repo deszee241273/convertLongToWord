@@ -17,10 +17,13 @@ import org.desz.longtoword.factory.WordCacheSupplier;
 import org.desz.longtoword.language.ProvLang;
 import org.desz.longtoword.language.WordCache;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author des
  *
  */
+@Slf4j
 public final class DeDecorator implements IWordDecorator<Word> {
 
 	public WordCache wordCache;
@@ -33,7 +36,8 @@ public final class DeDecorator implements IWordDecorator<Word> {
 	 */
 	public DeDecorator(final Word word) {
 		this.word = requireNonNull(word);
-
+		if (LongToWordService.WC_CTX.isBound())
+			log.info("WC_CTX BOUND");
 		this.wordCache = LongToWordService.WC_CTX.orElse(WordCacheSupplier.wcInstance().get(ProvLang.DE));
 
 	}
