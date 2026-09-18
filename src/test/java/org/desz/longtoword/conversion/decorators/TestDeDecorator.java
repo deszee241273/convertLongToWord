@@ -14,10 +14,10 @@ class TestDeDecorator {
 
 	static WordCache wordCache = WordCacheSupplier.wcInstance().get(ProvLang.DE);
 
-	final ScopedValue<WordCache> wordCacheCtx = ScopedValue.newInstance();
-
 	@Test
 	void runTests() {
+
+		ScopedValue<WordCache> wordCacheCtx = ScopedValue.newInstance();
 
 		ScopedValue.where(wordCacheCtx, wordCache).run(() -> {
 			test_pluralise_unit_rule();

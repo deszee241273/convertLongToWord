@@ -18,7 +18,7 @@ import org.desz.longtoword.language.WordCache;
 
 final class WordSupplier implements Supplier<Word> {
 
-	private WordBuilder wordBuilder = Word.builder();
+	private WordBuilder wordBuilder;
 	private WordCache wordCache;
 	private List<String> numbers;
 

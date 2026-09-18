@@ -88,7 +88,7 @@ public final class LongToWordService {
 			}
 
 		} catch (BuildWordException _ex) {
-			throw new ConversionException(_ex);
+			throw new ConversionException(_ex.getMessage());
 		}
 
 		var result = normalizeSpace(stringifyWord(wordRef.get()));

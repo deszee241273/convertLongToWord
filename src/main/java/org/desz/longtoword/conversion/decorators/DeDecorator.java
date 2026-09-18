@@ -23,7 +23,7 @@ import org.desz.longtoword.language.WordCache;
  */
 public final class DeDecorator implements IWordDecorator<Word> {
 
-	public WordCache wordCache;
+	private final WordCache wordCache;
 
 	private final Word word;
 
@@ -40,7 +40,7 @@ public final class DeDecorator implements IWordDecorator<Word> {
 	private String pluralise(String unitWord) {
 
 		var num = asList(unitWord.split(SPACE));
-		String ein = wordCache.wordForNbr(1).orElseThrow(DecoratorException::new);
+		var ein = wordCache.wordForNbr(1).orElseThrow(DecoratorException::new);
 		var plur = unitWord.endsWith("e") ? unitWord + "n" : unitWord + "en";
 		return !(num.getFirst().equals(ein)) ? plur : unitWord;
 	}
@@ -83,12 +83,12 @@ public final class DeDecorator implements IWordDecorator<Word> {
 	@Override
 	public Word concatThouHund() {
 
-		var sb = new StringBuilder();
-		sb = nonNull(word.thou()) ? sb.append(word.thou().replaceAll(SPACE, EMPTY)) : sb;
+		WordBuilder builder = word.toBuilder();
+		var bword = nonNull(word.thou()) ? builder.thou(word.thou().replaceAll(SPACE, EMPTY).toLowerCase()).build()
+				: word;
 
-		sb = nonNull(word.hund()) ? sb.append(word.hund().replaceAll(SPACE, EMPTY)) : sb;
-
-		return word.toBuilder().thou(sb.toString().toLowerCase()).hund(EMPTY).build();
+		// concat thou and hund. set hund empty.
+		return nonNull(word.hund()) ? bword.toBuilder().thou(bword.thou() + bword.hund()).hund(EMPTY).build() : bword;
 
 	}
 
