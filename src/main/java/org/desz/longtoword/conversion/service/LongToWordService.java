@@ -43,7 +43,7 @@ public final class LongToWordService {
 	/**
 	 *
 	 * @param num      the long.
-	 * @param provLang the ProvLang.
+	 * @param provLang the ProvLang.	
 	 * @return the word.
 	 * @throws ConversionException the ConversionException.
 	 */
