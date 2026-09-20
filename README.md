@@ -7,7 +7,7 @@
 
 ### How do I get set up? ###
 
-* Maven 3.x project. Install to repository and use as dependency.
+* Maven 3.x project.
 
 ### Contribution guidelines ###
 
@@ -17,4 +17,4 @@
 
 ### Who do I talk to? ###
 
-* Des, des_williams_2000@yahoo.com
+* Des, deswilliams2412@outlook.com
