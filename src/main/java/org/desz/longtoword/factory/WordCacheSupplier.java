@@ -1,14 +1,13 @@
 package org.desz.longtoword.factory;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toUnmodifiableMap;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toUnmodifiableMap;
 import static java.util.stream.Stream.of;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 import org.desz.longtoword.language.ProvLang;
 import org.desz.longtoword.language.WordCache;
@@ -74,9 +73,9 @@ public final class WordCacheSupplier implements SingleParamSupplier<WordCache, P
 
 		case UK: {
 
-			return builder.quintn(UkUnit.QUINTS.unitRec.word()).quadrn(UkUnit.QUADS.unitRec.word())
-					.trilln(UkUnit.TRILLS.unitRec.word()).billn(UkUnit.BILLS.unitRec.word())
-					.milln(UkUnit.MILLS.unitRec.word()).thoud(UkUnit.THOUS.unitRec.word())
+			return builder.quint(UkUnit.QUINTS.unitRec.word()).quadr(UkUnit.QUADS.unitRec.word())
+					.trill(UkUnit.TRILLS.unitRec.word()).bill(UkUnit.BILLS.unitRec.word())
+					.mill(UkUnit.MILLS.unitRec.word()).thou(UkUnit.THOUS.unitRec.word())
 					.hund(UkUnit.HUNS.unitRec.word()).and(UkUnit.AND.unitRec.word())
 					.numWords(
 							of(UK.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word)))
@@ -84,18 +83,18 @@ public final class WordCacheSupplier implements SingleParamSupplier<WordCache, P
 		}
 
 		case FR: {
-			return builder.quintn(FrUnit.QUINTS.unitRec.word()).quadrn(FrUnit.QUADS.unitRec.word())
-					.trilln(FrUnit.TRILLS.unitRec.word()).billn(FrUnit.BILLS.unitRec.word())
-					.milln(FrUnit.MILLS.unitRec.word()).thoud(FrUnit.THOUS.unitRec.word())
+			return builder.quint(FrUnit.QUINTS.unitRec.word()).quadr(FrUnit.QUADS.unitRec.word())
+					.trill(FrUnit.TRILLS.unitRec.word()).bill(FrUnit.BILLS.unitRec.word())
+					.mill(FrUnit.MILLS.unitRec.word()).thou(FrUnit.THOUS.unitRec.word())
 					.hund(FrUnit.HUNS.unitRec.word()).and(FrUnit.AND.unitRec.word())
 					.numWords(
 							of(FR.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word)))
 					.build();
 		}
 		case DE: {
-			return builder.quintn(DeUnit.QUINTS.unitRec.word()).quadrn(DeUnit.QUADS.unitRec.word())
-					.trilln(DeUnit.TRILLS.unitRec.word()).billn(DeUnit.BILLS.unitRec.word())
-					.milln(DeUnit.MILLS.unitRec.word()).thoud(DeUnit.THOUS.unitRec.word())
+			return builder.quint(DeUnit.QUINTS.unitRec.word()).quadr(DeUnit.QUADS.unitRec.word())
+					.trill(DeUnit.TRILLS.unitRec.word()).bill(DeUnit.BILLS.unitRec.word())
+					.mill(DeUnit.MILLS.unitRec.word()).thou(DeUnit.THOUS.unitRec.word())
 					.hund(DeUnit.HUNS.unitRec.word()).and(DeUnit.AND.unitRec.word())
 					.numWords(
 							of(DE.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word)))
@@ -103,9 +102,9 @@ public final class WordCacheSupplier implements SingleParamSupplier<WordCache, P
 		}
 
 		case NL: {
-			return builder.quintn(NlUnit.QUINTS.unitRec.word()).quadrn(NlUnit.QUADS.unitRec.word())
-					.trilln(NlUnit.TRILLS.unitRec.word()).billn(NlUnit.BILLS.unitRec.word())
-					.milln(NlUnit.MILLS.unitRec.word()).thoud(NlUnit.THOUS.unitRec.word())
+			return builder.quint(NlUnit.QUINTS.unitRec.word()).quadr(NlUnit.QUADS.unitRec.word())
+					.trill(NlUnit.TRILLS.unitRec.word()).bill(NlUnit.BILLS.unitRec.word())
+					.mill(NlUnit.MILLS.unitRec.word()).thou(NlUnit.THOUS.unitRec.word())
 					.hund(NlUnit.HUNS.unitRec.word()).and(NlUnit.AND.unitRec.word())
 					.numWords(
 							of(NL.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word)))

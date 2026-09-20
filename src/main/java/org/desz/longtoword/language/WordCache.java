@@ -17,8 +17,8 @@ import lombok.Builder;
  */
 
 @Builder
-public record WordCache(String id, String quintn, String quadrn, String trilln, String billn, String milln,
-		String thoud, String hund, String and, Map<String, String> numWords) {
+public record WordCache(String id, String quint, String quadr, String trill, String bill, String mill,
+		String thou, String hund, String and, Map<String, String> numWords) {
 
 	/**
 	 * @param num the key.

@@ -39,11 +39,10 @@ public final class LongToWordService {
 	static final ScopedValue<List<String>> NUMS_CTX = ScopedValue.newInstance();
 	static final ScopedValue<WordBuilder> WB_CTX = ScopedValue.newInstance();
 
-
 	/**
 	 *
 	 * @param num      the long.
-	 * @param provLang the ProvLang.	
+	 * @param provLang the ProvLang.
 	 * @return the word.
 	 * @throws ConversionException the ConversionException.
 	 */
@@ -65,13 +64,12 @@ public final class LongToWordService {
 		}
 
 		var wordRef = new AtomicReference<Word>();
-		// list of formatted num elements.
+		// list num elements.
 		var numbers = asList(FORMATTER.format(num).split(","));
-		
-		WordBuilder wordBuilder = Word.builder();
 
 		try {
-			var word = ScopedValue.where(WB_CTX, wordBuilder).where(WC_CTX, wordCache).where(NUMS_CTX, numbers).call(wordSupplier::get);
+			var word = ScopedValue.where(WB_CTX, Word.builder()).where(WC_CTX, wordCache).where(NUMS_CTX, numbers)
+					.call(wordSupplier::get);
 			wordRef.set(word);
 
 			// decorate DE word.

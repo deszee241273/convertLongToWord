@@ -1,7 +1,6 @@
 package org.desz.longtoword.conversion.service;
 
 import static java.util.Arrays.asList;
-import static java.util.Objects.isNull;
 import static java.util.OptionalInt.of;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
@@ -22,26 +21,21 @@ final class WordSupplier implements Supplier<Word> {
 	private WordCache wordCache;
 	private List<String> numbers;
 
-	/**
-	 * rearrangement of DE hundredth.
-	 *
-	 * @param s      the DE word to process.
-	 * @param addAnd whether to add und.
-	 * @return the word.
-	 */
-	private String processDeHun(final String s, final boolean addAnd) {
+	private String processDeHun(final int num) {
 
-		var l = asList(s.split(SPACE));
+		var hun = this.convertHundredth(num);
+
+		var l = asList(hun.split(SPACE));
 		var sz = l.size();
 
 		if (sz == 1) {
-			return s;
+			return hun;
 		}
 
 		switch (sz) {
 
 		case 2 -> {
-			return addAnd ? l.get(1) + wordCache.and() + l.get(0) : l.get(0) + l.get(1).substring(3);
+			return num % 100 > 20 ? l.get(1) + wordCache.and() + l.get(0) : l.get(0) + l.get(1).substring(3);
 		}
 
 		case 3 -> {
@@ -60,41 +54,24 @@ final class WordSupplier implements Supplier<Word> {
 	 */
 	private Word buildWord() throws BuildWordException {
 
-		if (isNull(this.wordCache)) {
-			assert (LongToWordService.WC_CTX.isBound());
-			this.wordCache = LongToWordService.WC_CTX.orElseThrow(BuildWordException::new);
-
-			assert (LongToWordService.NUMS_CTX.isBound());
-			this.numbers = LongToWordService.NUMS_CTX.orElseThrow(BuildWordException::new);
-
-			assert (LongToWordService.WB_CTX.isBound());
-			this.wordBuilder = LongToWordService.WB_CTX.orElseThrow(BuildWordException::new);
-
-		}
-
 		var num = of(Integer.parseUnsignedInt(numbers.getFirst(), 10)).orElseThrow(BuildWordException::new);
 		var sz = numbers.size();
 		if (num != 0) {
 
-			var hun = convertHundredth(num);
-
-			if (wordCache.id().equals(DE.name())) {
-				hun = processDeHun(hun, num % 100 > 20);
-
-			}
+			var hun = wordCache.id().equals(DE.name()) ? processDeHun(num) : convertHundredth(num);
 
 			switch (sz) {
-			case 7 -> wordBuilder.quint(hun + wordCache.quintn());
+			case 7 -> wordBuilder.quint(hun + wordCache.quint());
 
-			case 6 -> wordBuilder.quadr(hun + wordCache.quadrn());
+			case 6 -> wordBuilder.quadr(hun + wordCache.quadr());
 
-			case 5 -> wordBuilder.trill(hun + wordCache.trilln());
+			case 5 -> wordBuilder.trill(hun + wordCache.trill());
 
-			case 4 -> wordBuilder.bill(hun + wordCache.billn());
+			case 4 -> wordBuilder.bill(hun + wordCache.bill());
 
-			case 3 -> wordBuilder.mill(hun + wordCache.milln());
+			case 3 -> wordBuilder.mill(hun + wordCache.mill());
 
-			case 2 -> wordBuilder.thou(hun + wordCache.thoud());
+			case 2 -> wordBuilder.thou(hun + wordCache.thou());
 
 			case 1 -> wordBuilder.hund(hun);
 
@@ -149,6 +126,12 @@ final class WordSupplier implements Supplier<Word> {
 
 	@Override
 	public Word get() {
+		this.wordCache = LongToWordService.WC_CTX.orElseThrow(BuildWordException::new);
+
+		this.numbers = LongToWordService.NUMS_CTX.orElseThrow(BuildWordException::new);
+
+		this.wordBuilder = LongToWordService.WB_CTX.orElseThrow(BuildWordException::new);
+
 		return this.buildWord();
 	}
 

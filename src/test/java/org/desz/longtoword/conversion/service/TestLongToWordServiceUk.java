@@ -2,7 +2,6 @@ package org.desz.longtoword.conversion.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.desz.longtoword.conversion.service.LongToWordService;
 import org.desz.longtoword.exceptions.ConversionException;
 import org.desz.longtoword.language.ProvLang;
 import org.junit.jupiter.api.BeforeEach;
