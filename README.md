@@ -2,8 +2,7 @@
 
 ### What is this repository for? ###
 
-* Convert long to word in one of several languages.
-* RELEASE.1.0
+* Java solution functioning to translate a positive long value to matching word. Several languages are supported, English, German, Dutch, French.
 
 ### How do I get set up? ###
 
