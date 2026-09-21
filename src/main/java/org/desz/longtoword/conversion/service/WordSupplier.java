@@ -7,6 +7,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.desz.longtoword.language.ProvLang.DE;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.desz.longtoword.conversion.results.Word;
@@ -48,14 +49,17 @@ final class WordSupplier implements Supplier<Word> {
 	}
 
 	/**
-	 * Applies tail recursion methodology to convert numbers into word.
+	 * Recursive method uses Tail Call Optimisation to build word.
 	 * 
 	 * @return the Word.
 	 */
 	private Word buildWord() throws BuildWordException {
 
+		if (numbers.isEmpty())
+			return wordBuilder.build();
 		var num = of(Integer.parseUnsignedInt(numbers.getFirst(), 10)).orElseThrow(BuildWordException::new);
 		var sz = numbers.size();
+
 		if (num != 0) {
 
 			var hun = wordCache.id().equals(DE.name()) ? processDeHun(num) : convertHundredth(num);
@@ -81,7 +85,7 @@ final class WordSupplier implements Supplier<Word> {
 
 		}
 		this.numbers = numbers.subList(1, sz);
-		return sz == 1 ? wordBuilder.build() : buildWord();
+		return buildWord();
 
 	}
 
@@ -126,11 +130,13 @@ final class WordSupplier implements Supplier<Word> {
 
 	@Override
 	public Word get() {
-		this.wordCache = LongToWordService.WC_CTX.orElseThrow(BuildWordException::new);
+		if (Objects.isNull(this.wordCache)) {
+			this.wordCache = LongToWordService.WC_CTX.orElseThrow(BuildWordException::new);
 
-		this.numbers = LongToWordService.NUMS_CTX.orElseThrow(BuildWordException::new);
+			this.numbers = LongToWordService.NUMS_CTX.orElseThrow(BuildWordException::new);
 
-		this.wordBuilder = LongToWordService.WB_CTX.orElseThrow(BuildWordException::new);
+			this.wordBuilder = LongToWordService.WB_CTX.orElseThrow(BuildWordException::new);
+		}
 
 		return this.buildWord();
 	}

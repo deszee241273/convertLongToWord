@@ -74,11 +74,12 @@ public final class LongToWordService {
 
 			// decorate DE word.
 			if (pvl.equals(ProvLang.DE)) {
-				var hundElem = OptionalInt.of(Integer.parseUnsignedInt(numbers.getLast(), 10))
+				var lastElem = OptionalInt.of(Integer.parseUnsignedInt(numbers.getLast(), 10))
 						.orElseThrow(ConversionException::new);
+				var lastIsEin = lastElem % 100 == 1;
 				ScopedValue.where(WC_CTX, wordCache).run(() -> {
 					var deWord = new DeDecorator(wordRef.get()).pluraliseUnit();
-					deWord = hundElem % 100 == 1 ? new DeDecorator(deWord).pluraliseEin() : deWord;
+					deWord = lastIsEin ? new DeDecorator(deWord).pluraliseEin() : deWord;
 					deWord = nonNull(deWord.thou()) ? new DeDecorator(deWord).concatThouHund() : deWord;
 					wordRef.set(deWord.toBuilder().build());
 				});
