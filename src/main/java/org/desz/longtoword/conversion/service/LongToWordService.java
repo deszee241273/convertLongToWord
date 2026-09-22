@@ -6,7 +6,7 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.apache.commons.lang3.StringUtils.normalizeSpace;
-import static org.desz.longtoword.factory.WordCacheSupplier.wcInstance;
+import static org.desz.longtoword.factory.WordForNumberSupplier.wcInstance;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -39,6 +39,8 @@ public final class LongToWordService {
 	static final ScopedValue<List<String>> NUMS_CTX = ScopedValue.newInstance();
 	static final ScopedValue<WordBuilder> WB_CTX = ScopedValue.newInstance();
 
+	public static final ScopedValue<ScopeRec> CTX = ScopedValue.newInstance();
+
 	/**
 	 *
 	 * @param num      the long.
@@ -57,19 +59,19 @@ public final class LongToWordService {
 			return wordCache.wordForNbr(0).orElseThrow(ConversionException::new).toLowerCase();
 		}
 
+		// return if cache contains num word mapping.
 		var hun = wordCache.wordForNbr((int) num);
 
 		if (hun.isPresent()) {
 			return hun.get().toLowerCase();
 		}
-
+		// compute the word.
 		var wordRef = new AtomicReference<Word>();
 		// list num elements.
 		var numbers = asList(FORMATTER.format(num).split(","));
-
+		var rec = new ScopeRec(Word.builder(), wordCache, numbers);
 		try {
-			var word = ScopedValue.where(WB_CTX, Word.builder()).where(WC_CTX, wordCache).where(NUMS_CTX, numbers)
-					.call(wordSupplier::get);
+			var word = ScopedValue.where(CTX, rec).call(wordSupplier::get);
 			wordRef.set(word);
 
 			// decorate DE word.
@@ -77,7 +79,7 @@ public final class LongToWordService {
 				var lastElem = OptionalInt.of(Integer.parseUnsignedInt(numbers.getLast(), 10))
 						.orElseThrow(ConversionException::new);
 				var lastIsEin = lastElem % 100 == 1;
-				ScopedValue.where(WC_CTX, wordCache).run(() -> {
+				ScopedValue.where(WC_CTX, rec.wordCache()).run(() -> {
 					var deWord = new DeDecorator(wordRef.get()).pluraliseUnit();
 					deWord = lastIsEin ? new DeDecorator(deWord).pluraliseEin() : deWord;
 					deWord = nonNull(deWord.thou()) ? new DeDecorator(deWord).concatThouHund() : deWord;

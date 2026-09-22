@@ -32,31 +32,31 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class WordCacheSupplier implements SingleParamSupplier<WordCache, ProvLang> {
+public final class WordForNumberSupplier implements UniParamSupplier<WordCache, ProvLang> {
 
 	// WordCache instances per ProvLang
 	private final Map<ProvLang, WordCache> wordCacheMap;
 
-	private static final AtomicReference<WordCacheSupplier> wcRef = new AtomicReference<>();
+	private static final AtomicReference<WordForNumberSupplier> wcRef = new AtomicReference<>();
 
 	/**
 	 * singleton.
 	 */
-	private WordCacheSupplier() {
+	private WordForNumberSupplier() {
 		this.wordCacheMap = new ConcurrentHashMap<>(ProvLang.values().length);
 	}
 
 	/**
 	 *
-	 * @return singleton WordCacheSupplier.
+	 * @return singleton WordForNumberSupplier.
 	 */
-	public static final WordCacheSupplier wcInstance() {
+	public static final WordForNumberSupplier wcInstance() {
 		while (true) {
 			var current = wcRef.get();
 			if (current != null) {
 				return current;
 			}
-			var obj = new WordCacheSupplier();
+			var obj = new WordForNumberSupplier();
 			if (wcRef.compareAndSet(null, obj)) {
 				return obj;
 			}
@@ -76,39 +76,27 @@ public final class WordCacheSupplier implements SingleParamSupplier<WordCache, P
 			return builder.quint(UkUnit.QUINTS.unitRec.word()).quadr(UkUnit.QUADS.unitRec.word())
 					.trill(UkUnit.TRILLS.unitRec.word()).bill(UkUnit.BILLS.unitRec.word())
 					.mill(UkUnit.MILLS.unitRec.word()).thou(UkUnit.THOUS.unitRec.word())
-					.hund(UkUnit.HUNS.unitRec.word()).and(UkUnit.AND.unitRec.word())
-					.numWords(
-							of(UK.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word)))
-					.build();
+					.hund(UkUnit.HUNS.unitRec.word()).and(UkUnit.AND.unitRec.word()).numWords(UK.mapping()).build();
 		}
 
 		case FR: {
 			return builder.quint(FrUnit.QUINTS.unitRec.word()).quadr(FrUnit.QUADS.unitRec.word())
 					.trill(FrUnit.TRILLS.unitRec.word()).bill(FrUnit.BILLS.unitRec.word())
 					.mill(FrUnit.MILLS.unitRec.word()).thou(FrUnit.THOUS.unitRec.word())
-					.hund(FrUnit.HUNS.unitRec.word()).and(FrUnit.AND.unitRec.word())
-					.numWords(
-							of(FR.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word)))
-					.build();
+					.hund(FrUnit.HUNS.unitRec.word()).and(FrUnit.AND.unitRec.word()).numWords(FR.mapping()).build();
 		}
 		case DE: {
 			return builder.quint(DeUnit.QUINTS.unitRec.word()).quadr(DeUnit.QUADS.unitRec.word())
 					.trill(DeUnit.TRILLS.unitRec.word()).bill(DeUnit.BILLS.unitRec.word())
 					.mill(DeUnit.MILLS.unitRec.word()).thou(DeUnit.THOUS.unitRec.word())
-					.hund(DeUnit.HUNS.unitRec.word()).and(DeUnit.AND.unitRec.word())
-					.numWords(
-							of(DE.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word)))
-					.build();
+					.hund(DeUnit.HUNS.unitRec.word()).and(DeUnit.AND.unitRec.word()).numWords(DE.mapping()).build();
 		}
 
 		case NL: {
 			return builder.quint(NlUnit.QUINTS.unitRec.word()).quadr(NlUnit.QUADS.unitRec.word())
 					.trill(NlUnit.TRILLS.unitRec.word()).bill(NlUnit.BILLS.unitRec.word())
 					.mill(NlUnit.MILLS.unitRec.word()).thou(NlUnit.THOUS.unitRec.word())
-					.hund(NlUnit.HUNS.unitRec.word()).and(NlUnit.AND.unitRec.word())
-					.numWords(
-							of(NL.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word)))
-					.build();
+					.hund(NlUnit.HUNS.unitRec.word()).and(NlUnit.AND.unitRec.word()).numWords(NL.mapping()).build();
 		}
 
 		}

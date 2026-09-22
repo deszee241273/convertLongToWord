@@ -14,18 +14,23 @@ import org.desz.longtoword.conversion.results.Word;
 import org.desz.longtoword.conversion.results.Word.WordBuilder;
 import org.desz.longtoword.conversion.service.LongToWordService;
 import org.desz.longtoword.exceptions.DecoratorException;
-import org.desz.longtoword.factory.WordCacheSupplier;
+import static org.desz.longtoword.factory.WordForNumberSupplier.wcInstance;
 import org.desz.longtoword.language.WordCache;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author des
  *
  */
+@Slf4j
 public final class DeDecorator implements IWordDecorator<Word> {
 
 	private final WordCache wordCache;
 
 	private final Word word;
+
+	private WordBuilder builder;
 
 	/**
 	 *
@@ -33,7 +38,9 @@ public final class DeDecorator implements IWordDecorator<Word> {
 	 */
 	public DeDecorator(final Word word) {
 		this.word = requireNonNull(word);
-		this.wordCache = LongToWordService.WC_CTX.orElse(WordCacheSupplier.wcInstance().get(DE));
+		this.builder = word.toBuilder();
+		this.wordCache = LongToWordService.WC_CTX.isBound() ? LongToWordService.WC_CTX.get()
+				: wcInstance().get(DE);
 
 	}
 
@@ -48,7 +55,6 @@ public final class DeDecorator implements IWordDecorator<Word> {
 	@Override
 	public Word pluraliseUnit() {
 
-		WordBuilder builder = word.toBuilder();
 		builder = nonNull(word.quint()) ?
 
 				builder.quint(pluralise(word.quint())) : builder;
@@ -75,7 +81,6 @@ public final class DeDecorator implements IWordDecorator<Word> {
 
 	@Override
 	public Word pluraliseEin() {
-		WordBuilder builder = word.toBuilder();
 		return nonNull(word.hund()) ? builder.hund(word.hund() + "s").build() : builder.hund(word.hund()).build();
 
 	}
@@ -83,7 +88,6 @@ public final class DeDecorator implements IWordDecorator<Word> {
 	@Override
 	public Word concatThouHund() {
 
-		WordBuilder builder = word.toBuilder();
 		var bword = nonNull(word.thou()) ? builder.thou(word.thou().replaceAll(SPACE, EMPTY).toLowerCase()).build()
 				: word;
 

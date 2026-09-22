@@ -58,6 +58,7 @@ final class WordSupplier implements Supplier<Word> {
 		if (numbers.isEmpty())
 			return wordBuilder.build();
 		var num = of(Integer.parseUnsignedInt(numbers.getFirst(), 10)).orElseThrow(BuildWordException::new);
+
 		var sz = numbers.size();
 
 		if (num != 0) {
@@ -131,11 +132,12 @@ final class WordSupplier implements Supplier<Word> {
 	@Override
 	public Word get() {
 		if (Objects.isNull(this.wordCache)) {
-			this.wordCache = LongToWordService.WC_CTX.orElseThrow(BuildWordException::new);
+			var sc = LongToWordService.CTX.get();
+			this.wordCache = sc.wordCache();
 
-			this.numbers = LongToWordService.NUMS_CTX.orElseThrow(BuildWordException::new);
+			this.numbers = sc.numbers();
 
-			this.wordBuilder = LongToWordService.WB_CTX.orElseThrow(BuildWordException::new);
+			this.wordBuilder = sc.builder();
 		}
 
 		return this.buildWord();

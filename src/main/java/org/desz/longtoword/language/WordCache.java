@@ -11,7 +11,7 @@ import lombok.Builder;
 /**
  * @author des
  *
- *         record for units and number-word mappings. WordCacheSupplier creates
+ *         record for units and number-word mappings. WordForNumberSupplier creates
  *         and caches instances.
  *
  */

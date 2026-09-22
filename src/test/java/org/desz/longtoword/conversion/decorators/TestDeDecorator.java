@@ -5,14 +5,14 @@ import static org.desz.longtoword.language.WordCacheData.DeUnit.QUINTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.desz.longtoword.conversion.results.Word;
-import org.desz.longtoword.factory.WordCacheSupplier;
+import org.desz.longtoword.factory.WordForNumberSupplier;
 import org.desz.longtoword.language.ProvLang;
 import org.desz.longtoword.language.WordCache;
 import org.junit.jupiter.api.Test;
 
 class TestDeDecorator {
 
-	static WordCache wordCache = WordCacheSupplier.wcInstance().get(ProvLang.DE);
+	static WordCache wordCache = WordForNumberSupplier.wcInstance().get(ProvLang.DE);
 
 	@Test
 	void runTests() {

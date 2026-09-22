@@ -5,6 +5,10 @@ package org.desz.longtoword.language;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
+import java.util.Map;
+import static java.util.stream.Collectors.toUnmodifiableMap;
+import java.util.stream.Stream;
+
 /**
  * @author des
  *
@@ -40,6 +44,11 @@ public final class WordCacheData {
 			this.numWord = nlrec;
 		}
 
+		public static Map<String, String> mapping() {
+			return Stream.of(NL.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word));
+
+		}
+
 	}
 
 	public enum DE {
@@ -63,7 +72,10 @@ public final class WordCacheData {
 		DE(NumWord derec) {
 			this.numWord = derec;
 		}
-
+		public static Map<String, String> mapping() {
+			return Stream.of(DE.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word));
+		}
+	
 	}
 
 	/**
@@ -92,6 +104,11 @@ public final class WordCacheData {
 		FR(NumWord frrec) {
 			this.numWord = frrec;
 		}
+
+		public static Map<String, String> mapping() {
+			return Stream.of(FR.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word));
+
+		}
 	}
 
 	public enum UK {
@@ -113,6 +130,12 @@ public final class WordCacheData {
 
 		UK(NumWord ukrec) {
 			this.numWord = ukrec;
+
+		}
+
+		public static Map<String, String> mapping() {
+			return Stream.of(UK.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word));
+
 		}
 
 	}
