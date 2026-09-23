@@ -9,7 +9,6 @@ import static org.apache.commons.lang3.StringUtils.normalizeSpace;
 import static org.desz.longtoword.factory.WordForNumberSupplier.wcInstance;
 
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Locale;
 import java.util.OptionalInt;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,7 +16,6 @@ import java.util.function.Supplier;
 
 import org.desz.longtoword.conversion.decorators.DeDecorator;
 import org.desz.longtoword.conversion.results.Word;
-import org.desz.longtoword.conversion.results.Word.WordBuilder;
 import org.desz.longtoword.exceptions.BuildWordException;
 import org.desz.longtoword.exceptions.ConversionException;
 import org.desz.longtoword.language.ProvLang;
@@ -36,8 +34,6 @@ public final class LongToWordService {
 	private final Supplier<Word> wordSupplier = new WordSupplier();
 
 	public static final ScopedValue<WordCache> WC_CTX = ScopedValue.newInstance();
-	static final ScopedValue<List<String>> NUMS_CTX = ScopedValue.newInstance();
-	static final ScopedValue<WordBuilder> WB_CTX = ScopedValue.newInstance();
 
 	public static final ScopedValue<ScopeRec> CTX = ScopedValue.newInstance();
 

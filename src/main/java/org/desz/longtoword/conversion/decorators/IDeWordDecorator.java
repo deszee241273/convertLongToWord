@@ -1,6 +1,6 @@
 package org.desz.longtoword.conversion.decorators;
 
-public interface IWordDecorator<T> {
+public interface IDeWordDecorator<T> {
 
 	T pluraliseEin();
 

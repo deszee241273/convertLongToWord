@@ -7,7 +7,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.desz.longtoword.language.ProvLang.DE;
 
 import java.util.List;
-import java.util.Objects;
+import static java.util.Objects.isNull;
 import java.util.function.Supplier;
 
 import org.desz.longtoword.conversion.results.Word;
@@ -108,7 +108,7 @@ final class WordSupplier implements Supplier<Word> {
 		var hun = (wordCache.wordForNbr(num / 100).orElseGet(() -> EMPTY) + wordCache.hund()).toLowerCase();
 
 		var mod = num % 100;
-		if (mod == 0) { // hun = 100, 200..900
+		if (mod == 0) {
 			return hun;
 		}
 
@@ -131,13 +131,13 @@ final class WordSupplier implements Supplier<Word> {
 
 	@Override
 	public Word get() {
-		if (Objects.isNull(this.wordCache)) {
-			var sc = LongToWordService.CTX.get();
-			this.wordCache = sc.wordCache();
+		if (isNull(this.wordCache) && LongToWordService.CTX.isBound()) {
+			var scopedData = LongToWordService.CTX.orElseThrow(BuildWordException::new);
+			this.wordCache = scopedData.wordCache();
 
-			this.numbers = sc.numbers();
+			this.numbers = scopedData.numbers();
 
-			this.wordBuilder = sc.builder();
+			this.wordBuilder = scopedData.builder();
 		}
 
 		return this.buildWord();
