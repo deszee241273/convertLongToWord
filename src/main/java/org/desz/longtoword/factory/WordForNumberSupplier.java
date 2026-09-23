@@ -2,8 +2,6 @@ package org.desz.longtoword.factory;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toUnmodifiableMap;
-import static java.util.stream.Stream.of;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +15,6 @@ import org.desz.longtoword.language.WordCacheData.FR;
 import org.desz.longtoword.language.WordCacheData.FrUnit;
 import org.desz.longtoword.language.WordCacheData.NL;
 import org.desz.longtoword.language.WordCacheData.NlUnit;
-import org.desz.longtoword.language.WordCacheData.NumWord;
 import org.desz.longtoword.language.WordCacheData.UK;
 import org.desz.longtoword.language.WordCacheData.UkUnit;
 

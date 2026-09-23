@@ -84,11 +84,12 @@ public final class DeDecorator implements IDeWordDecorator<Word> {
 	@Override
 	public Word concatThouHund() {
 
-		var bword = nonNull(word.thou()) ? builder.thou(word.thou().replaceAll(SPACE, EMPTY).toLowerCase()).build()
+		var thnd = nonNull(word.thou()) ? builder.thou(word.thou().replaceAll(SPACE, EMPTY).toLowerCase()).build()
 				: word;
 
 		// concat thou and hund. set hund empty.
-		return nonNull(word.hund()) ? bword.toBuilder().thou(bword.thou() + bword.hund()).hund(EMPTY).build() : bword;
+		return nonNull(word.hund()) ? thnd.toBuilder()
+				.thou(thnd.thou().concat(thnd.hund()).replaceAll(SPACE, EMPTY).toLowerCase()).hund(EMPTY).build() : thnd;
 
 	}
 

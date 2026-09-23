@@ -1,11 +1,8 @@
 package org.desz.longtoword.conversion.service;
 
 import static java.util.Arrays.asList;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringUtils.SPACE;
-import static org.apache.commons.lang3.StringUtils.normalizeSpace;
 import static org.desz.longtoword.factory.WordForNumberSupplier.wcInstance;
 
 import java.text.NumberFormat;
@@ -35,7 +32,7 @@ public final class LongToWordService {
 
 	public static final ScopedValue<WordCache> WC_CTX = ScopedValue.newInstance();
 
-	public static final ScopedValue<ScopeRec> CTX = ScopedValue.newInstance();
+	public static final ScopedValue<ScopeParams> CTX = ScopedValue.newInstance();
 
 	/**
 	 *
@@ -65,9 +62,9 @@ public final class LongToWordService {
 		var wordRef = new AtomicReference<Word>();
 		// list num elements.
 		var numbers = asList(FORMATTER.format(num).split(","));
-		var rec = new ScopeRec(Word.builder(), wordCache, numbers);
+		var scopedValues = new ScopeParams(Word.builder(), wordCache, numbers);
 		try {
-			var word = ScopedValue.where(CTX, rec).call(wordSupplier::get);
+			var word = ScopedValue.where(CTX, scopedValues).call(wordSupplier::get);
 			wordRef.set(word);
 
 			// decorate DE word.
@@ -75,7 +72,7 @@ public final class LongToWordService {
 				var lastElem = OptionalInt.of(Integer.parseUnsignedInt(numbers.getLast(), 10))
 						.orElseThrow(ConversionException::new);
 				var lastIsEin = lastElem % 100 == 1;
-				ScopedValue.where(WC_CTX, rec.wordCache()).run(() -> {
+				ScopedValue.where(WC_CTX, wordCache).run(() -> {
 					var deWord = new DeDecorator(wordRef.get()).pluraliseUnit();
 					deWord = lastIsEin ? new DeDecorator(deWord).pluraliseEin() : deWord;
 					deWord = nonNull(deWord.thou()) ? new DeDecorator(deWord).concatThouHund() : deWord;
@@ -88,24 +85,11 @@ public final class LongToWordService {
 			throw new ConversionException(_ex.getMessage());
 		}
 
-		var result = normalizeSpace(stringifyWord(wordRef.get()));
+		var result = wordRef.get().toString();
 
 		log.info(String.format("%s converted to %s", num, result));
 		return result;
 
-	}
-
-	private String stringifyWord(Word word) {
-		var sb = new StringBuilder();
-		sb = !isNull(word.quint()) ? sb.append(word.quint() + SPACE) : sb;
-		sb = !isNull(word.quadr()) ? sb.append(word.quadr() + SPACE) : sb;
-		sb = !isNull(word.trill()) ? sb.append(word.trill() + SPACE) : sb;
-		sb = !isNull(word.bill()) ? sb.append(word.bill() + SPACE) : sb;
-		sb = !isNull(word.mill()) ? sb.append(word.mill() + SPACE) : sb;
-		sb = !isNull(word.thou()) ? sb.append(word.thou() + SPACE) : sb;
-		sb = !isNull(word.hund()) ? sb.append(word.hund()) : sb;
-
-		return sb.toString();
 	}
 
 }
