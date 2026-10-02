@@ -14,7 +14,7 @@ jobs:
       matrix:
         maven:
           - 3.8.8
-          - 3.9.8
+          - 3.9.16
     name: 'Maven ${{ matrix.maven }} sample'
     steps:
       - name: Setup Maven Action
