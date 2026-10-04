@@ -15,11 +15,14 @@ jobs:
         maven:
           - 3.8.8
           - 3.9.16
+        java:
+          - 21
+          - 25
     name: 'Maven ${{ matrix.maven }} sample'
     steps:
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.21.0
         with:
-          java-version: 25
+          java-version: '${{ matrix.java }}'
           maven-version: '${{ matrix.maven }}'
       - run: mvn -V -B package --file pom.xml
