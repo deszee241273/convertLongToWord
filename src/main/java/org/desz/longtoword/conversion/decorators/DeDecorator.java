@@ -89,7 +89,8 @@ public final class DeDecorator implements IDeWordDecorator<Word> {
 
 		// concat thou and hund. set hund empty.
 		return nonNull(word.hund()) ? thnd.toBuilder()
-				.thou(thnd.thou().concat(thnd.hund()).replaceAll(SPACE, EMPTY).toLowerCase()).hund(EMPTY).build() : thnd;
+				.thou(thnd.thou().concat(thnd.hund()).replaceAll(SPACE, EMPTY).toLowerCase()).hund(EMPTY).build()
+				: thnd;
 
 	}
 

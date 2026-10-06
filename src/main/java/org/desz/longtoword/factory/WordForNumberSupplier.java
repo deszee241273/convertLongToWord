@@ -22,8 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
- * Implements Supplier functionality, Singleton, creates single WordCache per
- * ProvLang.
+ * Supplier, Singleton, creates WordCache per ProvLang.
  *
  * @author des
  *
@@ -37,7 +36,7 @@ public final class WordForNumberSupplier implements UniParamSupplier<WordCache, 
 	private static final AtomicReference<WordForNumberSupplier> wcRef = new AtomicReference<>();
 
 	/**
-	 * singleton.
+	 * private constructor.
 	 */
 	private WordForNumberSupplier() {
 		this.wordCacheMap = new ConcurrentHashMap<>(ProvLang.values().length);
@@ -103,10 +102,9 @@ public final class WordForNumberSupplier implements UniParamSupplier<WordCache, 
 
 	@Override
 	public WordCache get(ProvLang pl) {
-		requireNonNull(pl, "ProvLang argument null.");
+		requireNonNull(pl, "ProvLang argument required but is null.");
 		var res = wordCacheMap.computeIfAbsent(pl, _ -> cache(pl));
-		var pls = wordCacheMap.keySet().stream().map(ProvLang::name).collect(joining(", "));
-		log.info(String.format("Cached %s.", pls));
+		log.info("Cached %s." + wordCacheMap.keySet().stream().map(ProvLang::name).collect(joining(", ")));
 		return res;
 	}
 }

@@ -18,8 +18,7 @@ public final class ConversionException extends Exception {
 		super();
 	}
 
-	public ConversionException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
+	public ConversionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 

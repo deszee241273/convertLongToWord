@@ -11,14 +11,14 @@ import lombok.Builder;
 /**
  * @author des
  *
- *         record for units and number-word mappings. WordForNumberSupplier creates
- *         and caches instances.
+ *         record for units and number-word mappings. WordForNumberSupplier
+ *         creates and caches instances.
  *
  */
 
 @Builder
-public record WordCache(String id, String quint, String quadr, String trill, String bill, String mill,
-		String thou, String hund, String and, Map<String, String> numWords) {
+public record WordCache(String id, String quint, String quadr, String trill, String bill, String mill, String thou,
+		String hund, String and, Map<String, String> numWords) {
 
 	/**
 	 * @param num the key.

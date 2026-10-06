@@ -46,8 +46,7 @@ public class BuildWordException extends RuntimeException {
 	 * @param enableSuppression
 	 * @param writableStackTrace
 	 */
-	public BuildWordException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
+	public BuildWordException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 
 	}

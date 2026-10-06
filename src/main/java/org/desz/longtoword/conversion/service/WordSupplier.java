@@ -1,13 +1,13 @@
 package org.desz.longtoword.conversion.service;
 
 import static java.util.Arrays.asList;
+import static java.util.Objects.isNull;
 import static java.util.OptionalInt.of;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.desz.longtoword.language.ProvLang.DE;
 
 import java.util.List;
-import static java.util.Objects.isNull;
 import java.util.function.Supplier;
 
 import org.desz.longtoword.conversion.results.Word;
@@ -106,21 +106,18 @@ final class WordSupplier implements Supplier<Word> {
 		}
 
 		var hun = (wordCache.wordForNbr(num / 100).orElseGet(() -> EMPTY) + wordCache.hund()).toLowerCase();
-
 		var mod = num % 100;
 		if (mod == 0) {
 			return hun;
 		}
 
 		hun = num < 100 ? EMPTY : hun + SPACE + wordCache.and();
-
 		var dec = wordCache.wordForNbr(mod);
 
 		if (dec.isPresent()) {
 			return hun + dec.get().toLowerCase();
 		}
-		// calculate decimal part.
-
+		// given mod % 10 cannot be 0.
 		int k = mod;// e.g., mod = 23
 		mod %= 10;
 		k -= mod;
@@ -131,7 +128,7 @@ final class WordSupplier implements Supplier<Word> {
 
 	@Override
 	public Word get() {
-		if (isNull(this.wordCache) && LongToWordService.CTX.isBound()) {
+		if (isNull(this.wordCache)) {
 			var scopedData = LongToWordService.CTX.orElseThrow(BuildWordException::new);
 			this.wordCache = scopedData.wordCache();
 

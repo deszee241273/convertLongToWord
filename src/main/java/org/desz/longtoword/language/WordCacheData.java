@@ -3,10 +3,10 @@
  */
 package org.desz.longtoword.language;
 
+import static java.util.stream.Collectors.toUnmodifiableMap;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
 import java.util.Map;
-import static java.util.stream.Collectors.toUnmodifiableMap;
 import java.util.stream.Stream;
 
 /**
@@ -72,10 +72,11 @@ public final class WordCacheData {
 		DE(NumWord derec) {
 			this.numWord = derec;
 		}
+
 		public static Map<String, String> mapping() {
 			return Stream.of(DE.values()).map(o -> o.numWord).collect(toUnmodifiableMap(NumWord::num, NumWord::word));
 		}
-	
+
 	}
 
 	/**
