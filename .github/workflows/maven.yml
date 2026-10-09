@@ -43,4 +43,4 @@ jobs:
       - name: Build and test
         run: ./mvnw -B -U verify
         # If your repo does not use the Maven Wrapper, replace with:
-        # run: mvn -B -U verify
+        run: mvn -B --update-snapshots verify
