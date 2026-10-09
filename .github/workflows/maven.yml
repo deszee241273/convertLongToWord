@@ -1,26 +1,46 @@
 name: Java CI with Maven
-'on':
+
+on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: maven-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        maven:
-          - 3.8.8
-          - 3.9.16
-        
-    name: 'Maven ${{ matrix.maven }} sample'
+        java: [25]
+        maven: [3.8.8, 3.9.16]
+
+    name: Java ${{ matrix.java }} / Maven ${{ matrix.maven }}
+
     steps:
-      - name: Setup Maven Action
-        uses: s4u/setup-maven-action@v1.21.0
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
         with:
-          java-version: 25
-          maven-version: '${{ matrix.maven }}'
-      - run: mvn -V -B package --file pom.xml
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven
+
+      - name: Set up Maven ${{ matrix.maven }}
+        uses: s4u/setup-maven-action@v1
+        with:
+          maven-version: ${{ matrix.maven }}
+
+      - name: Build and test
+        run: ./mvnw -B -U verify
+        # If your repo does not use the Maven Wrapper, replace with:
+        # run: mvn -B -U verify
